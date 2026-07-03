@@ -44,7 +44,6 @@ extern struct pc_Cmd pcCmds[];
  */
 extern void pc_DoCmd(void);
 
-
 /*! \brief Run console enter task (thread or concurrence)
  *
  *  Detailed description starts here.
@@ -61,3 +60,5 @@ enum
 #endif
 
 #endif // PCON_H_INCLUDED
+
+

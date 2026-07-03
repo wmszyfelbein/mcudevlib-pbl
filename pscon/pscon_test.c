@@ -1,14 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <sys/ioctl.h>
 #include <unistd.h>
-#include <termios.h>
 #include <fcntl.h>
+
+#ifdef __linux__
+#include <sys/ioctl.h>
+#include <termios.h>
+#endif // __linux__
+
+#if defined(WIN32) || defined(WIN64)
+#include <conio.h>
+#endif //defined(WIN32) || defined(WIN64)
 
 #include "pscon.h"
 
-//----------------------------------------------------------------------------------------------------------------------
+#ifdef __linux__
+
 static int pc_Terminal;
 
 char pc_TstGetCh(void)
@@ -47,6 +54,24 @@ void pc_DeInitTrmCon(void)
    tcsetattr( STDOUT_FILENO, TCSANOW, &newattr );
 }
 
+#endif // __linux__
+
+#if defined(WIN32) || defined(WIN64)
+
+#define pc_InitTrmCon()
+#define pc_DeInitTrmCon()
+
+inline char pc_TstGetCh(void)
+{
+       return (char)_getch()
+}
+
+void pc_TstPutCh(char ch)
+{
+    (void)putchar((int)ch);
+}
+#endif // defined(WIN32) || defined(WIN64)
+
 //----------------------------------------------------------------------------------------------------------------------
 void Fun1(void)
 {
@@ -60,10 +85,11 @@ void Fun2(void)
 
 void Exit(void)
 {
+    printf("Exit\n\r");
     exit(0);
 }
 
-struct pc_Cmd pcCmds[] =
+struct pc_Cmd pcCmds[]=
 {
     {"cmd1", Fun1},
     {"cmd2", Fun2},
@@ -73,10 +99,10 @@ struct pc_Cmd pcCmds[] =
 
 int main()
 {
-   printf("START\n");
-   pc_InitTrmCon();
-   pc_Console();
-   pc_DeInitTrmCon();
-   printf("\nEND\n");
-   return 0;
+    printf("START\n");
+    pc_InitTrmCon();
+    pc_Console();
+    pc_DeInitTrmCon();
+    printf("\nEND\n");
+    return 0;
 }
