@@ -91,10 +91,8 @@ struct pc_Cmd pcCmds[]=
 
 int main()
 {
-    printf("START\n");
     pc_InitTrmCon();
-    pc_Console();
+    while (pc_ConType == pc_cConTypeConcurrence) pc_Console();
     pc_DeInitTrmCon();
-    printf("\nEND\n");
     return 0;
 }

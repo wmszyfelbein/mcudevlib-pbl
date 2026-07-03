@@ -58,5 +58,5 @@ dkms.conf
 *.depend
 *.layout
 *.save
-**bin/Debug/
-**bin/Release/
+**bin/
+

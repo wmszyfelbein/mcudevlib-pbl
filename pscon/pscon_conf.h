@@ -35,6 +35,9 @@
 //!Info string displayed if command not in command array
 #define pc_sInfoNoCmd "Command doasn't exist"
 
+//!Prompt string. Can be ""
+#define pc_sPromptStr "|>"
+
 //!Function which should be defined to get char (look at macro pc_GetChar). Here is an example.
 //!Can be macro to. Remember add your header.
 extern char pc_TstGetCh(void);

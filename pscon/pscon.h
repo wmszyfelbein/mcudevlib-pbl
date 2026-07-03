@@ -12,12 +12,6 @@
 
 #include "pscon_conf.h"
 
-#if defined(pc_USESTDLIB) && (pc_USESTDLIB==0)
-#include <string.h>
-#else
-#include <string.h>
-#endif // defined(pc_USESTDLIB) && (pc_USESTDLIB==0)
-
 #ifdef __cplusplus
 extern "C" {
 #endif
