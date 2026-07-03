@@ -19,11 +19,11 @@
 #define pc_InBufferSize (10)
 
 //!pc_ConType - Execution type.
-#define pc_ConType (pc_cConTypeConcurece)
+#define pc_ConType (pc_cConTypeConcurrence)
 //!pc_ConTypeThread - There is a special thread for execute console. pc_GetChar - macro should block thread
 #define pc_ConTypeThread (1)
-//!pc_cConTypeConcurece - There in not a thread for console. Library rmebber state of between call pc_Console.
-#define pc_cConTypeConcurece (0)
+//!pc_cConTypeConcurrence - There in not a thread for console. Library remember state of between call pc_Console.
+#define pc_cConTypeConcurrence (0)
 
 //!Defines function to put function
 #define pc_PutChar(x) pc_TstPutCh(x)

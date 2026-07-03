@@ -28,8 +28,8 @@ extern "C" {
  */
 struct pc_Cmd
 {
-    char *Cmd;                          //!<
-    void (*Fun)(void);                  //!<
+    char *Cmd;                          //!<Command string
+    void (*Fun)(void);                  //!<Command function which be called when command was entered
 };
 
 /*! \brief Array of all defined commands
@@ -38,20 +38,14 @@ struct pc_Cmd
  */
 extern struct pc_Cmd pcCmds[];
 
-/*! \brief Prepare command line to new entrance of command
- *
- *  Fill command line with empty char
- */
-extern void pc_GetCmdLine(void);
-
 /*! \brief
  *
- *  Detailed description starts here.
+ *  Function realize command is entered
  */
 extern void pc_DoCmd(void);
 
 
-/*! \brief Run console task
+/*! \brief Run console enter task (thread or concurrence)
  *
  *  Detailed description starts here.
  */
