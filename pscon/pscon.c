@@ -1,8 +1,8 @@
 /******************************************* PiUE - Wojciech M. Szyfelbein  ********************************************
+* PROJECT:                  PiUE Simple Console                                                                        *
 * FILENAME:                 pscon.c                                                                                    *
 * AUTHOR:                   Wojciech M. Szyfelbein                                                                     *
-* DESCRIPTION:                                                                                                         *
-*		                                                                                                               *
+* INFO:                                                                                                                *
 ******************************************** PiUE - Wojciech M. Szyfelbein  *******************************************/
 
 #include <stdio.h>

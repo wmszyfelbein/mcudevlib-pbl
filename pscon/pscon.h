@@ -1,8 +1,8 @@
 /******************************************* PiUE - Wojciech M. Szyfelbein  ********************************************
+* PROJECT:                  PiUE Simple Console                                                                        *
 * FILENAME:                 pscon.h                                                                                    *
 * AUTHOR:                   Wojciech M. Szyfelbein                                                                     *
-* DESCRIPTION:                                                                                                         *
-*		This file define of base types                                                                                 *
+* INFO:                     This file consist declaration of all console function and needed types and macros          *
 ******************************************* PiUE - Wojciech M. Szyfelbein  ********************************************/
 
 #ifndef PCON_H_INCLUDED
