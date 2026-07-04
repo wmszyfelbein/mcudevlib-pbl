@@ -25,7 +25,7 @@
 #define pc_cConTypeConcurrence (0)
 
 //!pc_UseOptions - Set to 1 to use options
-#define pc_UseOptions (0)
+#define pc_UseOptions (1)
 #define pc_OptNameType char
 #define pc_OptTypeType char
 

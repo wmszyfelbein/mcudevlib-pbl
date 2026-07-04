@@ -16,6 +16,7 @@ enum
 {
     pc_CmdReady=-1,
     pc_CmdPrepLine=-2,
+    pc_CmdParamProbe=-3,
 };
 
 static char PCInBuffer[pc_InBufferSize];
@@ -86,6 +87,7 @@ void pc_DoCmd(void)
             if ((pcCmds[(pc_uidx)iCmdCnt].Cmd[(pc_uidx)iCmdChrCnt]=='\0') &&
                 ((PCInBuffer[(pc_uidx)iLnChrCnt]=='\0') || PCInBuffer[(pc_uidx)iLnChrCnt]==' ')) {
                 //command found, do it
+                pc_iCurPos=pc_CmdParamProbe;
                 pcCmds[(pc_uidx)iCmdCnt].Fun();
                 pc_iCurPos=pc_CmdPrepLine;
                 return;

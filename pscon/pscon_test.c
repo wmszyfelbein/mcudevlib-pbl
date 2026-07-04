@@ -64,6 +64,7 @@ void pc_TstPutCh(char ch)
 
 
 //----------------------------------------------------------------------------------------------------------------------
+#if pc_UseOptions==0
 void Fun1(void)
 {
     printf("\n\rFun1 z 2\n\r");
@@ -73,6 +74,18 @@ void Fun2(void)
 {
     printf("\n\rFun2 z 2\n\r");
 }
+#endif
+#if pc_UseOptions==1
+void Fun1p(void)
+{
+    printf("\n\rFun1 z 2\n\r");
+}
+
+void Fun2p(void)
+{
+    printf("\n\rFun2 z 2\n\r");
+}
+#endif //pc_UseOptions==0
 
 void Exit(void)
 {
@@ -80,12 +93,33 @@ void Exit(void)
     exit(0);
 }
 
-struct pc_Cmd pcCmds[]=
-{
-    {"cmd1", Fun1},
-    {"cmd2", Fun2},
-    {"exit", Exit}
-};
+#if pc_UseOptions==0
+pc_BeginCmdArr
+    pc_DefineCmd("cmd1", Fun1),
+    pc_DefineCmd("cmd2", Fun2),
+    pc_DefineCmd("exit", Exit),
+pc_EndCmdArr;
+#endif
+
+#if pc_UseOptions==1
+pc_BeginCmdArr
+    pc_BeginCmd("cmd1p",Fun1p)
+        pc_DefineParam('1',pc_otFlag),
+        pc_DefineParam('3',pc_otFlag),
+        pc_DefineParam('3',pc_otEnd),
+    pc_EndCmd,
+    pc_BeginCmd("cmd2p",Fun2p)
+        pc_DefineParam('1',pc_otFlag),
+        pc_DefineParam('3',pc_otFlag),
+        pc_DefineParam('3',pc_otEnd),
+    pc_EndCmd,
+    pc_BeginCmd("exit",Exit)
+        pc_DefineParam('3',pc_otEnd),
+    pc_EndCmd,
+    pc_EndCmdList
+pc_EndCmdArr;
+#endif
+
 
 
 int main()

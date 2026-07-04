@@ -12,6 +12,8 @@
 
 #include "pscon_conf.h"
 
+#include <limits.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -50,7 +52,7 @@ struct pc_Cmd
 {
     char *Cmd;                          //!<Command string
     void (*Fun)(void);                  //!<Command function which be called when command was entered
-#if pc_UseOptions!=0
+#if pc_UseOptions==1
     struct pc_Option *Opts;             //!<Pointer to array of options defines
 #endif
 };
@@ -59,7 +61,23 @@ struct pc_Cmd
  *
  *  In this array should be all pointers to defined commands
  */
-extern struct pc_Cmd pcCmds[];
+extern struct pc_Cmd const pcCmds[];
+
+#define pc_BeginCmdArr struct pc_Cmd const pcCmds[]=(struct pc_Cmd[]) {
+#define pc_EndCmdArr }
+
+#if pc_UseOptions==0 
+#define pc_DefineCmd(name,fun) {.Cmd=name,.Fun=fun}
+#endif
+
+#if pc_UseOptions==1
+#define pc_BeginCmd(name,fun) (struct pc_Cmd const){.Cmd=name,.Fun=fun,\
+    .Opts=(struct pc_Option*) (struct pc_Option const[]) {
+#define pc_EndCmd }}
+#define pc_EndCmdList (struct pc_Cmd const){nullptr,.Fun=nullptr,.Opts=nullptr}
+#define pc_DefineParam(opt,type) (struct pc_Option const){.Opt=opt,.Type=type}
+#define pcEndParamList pc_DefineParam('\0',pc_otEnd)
+#endif // pc_UseOptions
 
 /*! \brief
  *
