@@ -19,7 +19,7 @@ enum
     pc_CmdParamProbe=-3,
 };
 
-static char PCInBuffer[pc_InBufferSize];
+static char PCInBuffer[pc_InBufferSize+1];//1 to end 0 char
 static pc_IndexType pc_iCurPos=pc_CmdPrepLine;
 
 static void pc_Print(char* sStr)
@@ -46,6 +46,9 @@ static void pc_PrepNewLine(void)
     if (pc_iCurPos==pc_CmdPrepLine) {
         pc_Print("\r\n");
         pc_iCurPos=0;
+#if pc_UseOptions==1
+        for(pc_IndexType iPos=0;iPos<pc_InBufferSize;iPos++) PCInBuffer[(pc_uidx)iPos]='\0';
+#endif // pc_UseOptions
         if (sizeof(pc_sPromptStr)>1) pc_Print(pc_sPromptStr); //should be optimized in final
     }
 }
@@ -87,13 +90,13 @@ void pc_DoCmd(void)
             if ((pcCmds[(pc_uidx)iCmdCnt].Cmd[(pc_uidx)iCmdChrCnt]=='\0') &&
                 ((PCInBuffer[(pc_uidx)iLnChrCnt]=='\0') || PCInBuffer[(pc_uidx)iLnChrCnt]==' ')) {
                 //command found, do it
-                pc_iCurPos=pc_CmdParamProbe;
-                pcCmds[(pc_uidx)iCmdCnt].Fun();
+                pc_iCurPos=iSpCmd;
+                pcCmds[(pc_uidx)iCmdCnt].Fun(iCmdCnt);
                 pc_iCurPos=pc_CmdPrepLine;
                 return;
             }
             if ((pcCmds[(pc_uidx)iCmdCnt].Cmd[(pc_uidx)iCmdChrCnt]==
-                                  PCInBuffer[(pc_uidx)iLnChrCnt]) && (pcCmds[(pc_uidx)iCmdCnt].Cmd[(pc_uidx)iCmdChrCnt]!=0))
+                PCInBuffer[(pc_uidx)iLnChrCnt]) && (pcCmds[(pc_uidx)iCmdCnt].Cmd[(pc_uidx)iCmdChrCnt]!=0))
                 continue;
             //command did't find or test next command
             break;
@@ -110,3 +113,40 @@ void pc_Console(void)
         pc_DoCmd();
     } while (pc_ConType == pc_ConTypeThread);
 }
+
+void pc_PrintPSConsoleVer(pc_IndexType iCmd)
+{
+
+}
+
+ #if pc_UseOptions==1
+char pc_GetNextPrmFlag(void)
+{
+    return PCInBuffer[(pc_uidx)pc_iCurPos++];
+}
+
+char* pc_GetNextPrmSTR(void)
+{
+    char *pcStr = &PCInBuffer[(pc_uidx)pc_iCurPos];
+    //looking for end string, now only string up to 0 or space tab or end buffer
+    for (;pc_iCurPos<pc_InBufferSize || PCInBuffer[(pc_uidx)pc_iCurPos]!='\0' || PCInBuffer[(pc_uidx)pc_iCurPos]!='\0';
+            pc_iCurPos++);
+    PCInBuffer[(pc_uidx)pc_iCurPos]='\0';
+    return pcStr;
+}
+
+enum pc_OptionType pc_GetNextPrmType(pc_IndexType iCmdCnt)
+{
+    for (;pc_iCurPos<pc_InBufferSize || PCInBuffer[(pc_uidx)pc_iCurPos]=='\0';pc_iCurPos++) {
+        //looking for parameter - one char
+        for (pc_IndexType iOptId=0; pcCmds[(pc_uidx)iCmdCnt].Opts[(pc_uidx)iOptId].Type!=pc_otEnd; iOptId++) {
+            if (PCInBuffer[(pc_uidx)pc_iCurPos]==pcCmds[(pc_uidx)iCmdCnt].Opts[(pc_uidx)iOptId].Opt) {
+                return pcCmds[(pc_uidx)iCmdCnt].Opts[(pc_uidx)iOptId].Type;
+            }
+        }
+    }
+    return pc_otEnd;
+};
+#endif // pc_UseOptions
+
+

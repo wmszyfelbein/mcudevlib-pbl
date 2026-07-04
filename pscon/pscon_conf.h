@@ -15,7 +15,7 @@
 #define pc_IndexType char
 
 //!Size of input buffer. Type of array is char
-#define pc_InBufferSize (10)
+#define pc_InBufferSize (50)
 
 //!pc_ConType - Execution type. Loot at pc_ConTypeThread and pc_ConTypeThread
 #define pc_ConType (pc_cConTypeConcurrence)
@@ -47,7 +47,7 @@
 #define pc_sInfoNoOpt "Option for commnad: %s doasn't exist"
 
 //!Prompt string. Can be ""
-#define pc_sPromptStr "|>"
+#define pc_sPromptStr "PIUE>"
 
 //!Function which should be defined to get char (look at macro pc_GetChar). Here is an example.
 //!Can be macro to. Remember add your header.

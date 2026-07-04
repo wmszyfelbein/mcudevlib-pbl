@@ -65,29 +65,44 @@ void pc_TstPutCh(char ch)
 
 //----------------------------------------------------------------------------------------------------------------------
 #if pc_UseOptions==0
-void Fun1(void)
+void Fun1(pc_IndexType iCmd)
 {
     printf("\n\rFun1 z 2\n\r");
 }
 
-void Fun2(void)
+void Fun2(pc_IndexType iCmd)
 {
     printf("\n\rFun2 z 2\n\r");
 }
 #endif
 #if pc_UseOptions==1
-void Fun1p(void)
+static char *apcOptTypes[]= {"End","Flag","Int8","UInt8","Int32","UInt32","Str"};
+
+void Fun1p(pc_IndexType iCmd)
 {
-    printf("\n\rFun1 z 2\n\r");
+    enum pc_OptionType Ot;
+    printf("\n\rFun1p z 2\n\r");
+    do {
+        Ot=pc_GetNextPrmType(iCmd);
+        printf("Option type: %s\n\r", apcOptTypes[Ot]);
+        switch (Ot) {
+            case pc_otFlag:
+                printf("Flag value: %c\n\r\n\r",pc_GetNextPrmFlag());
+                break;
+            case pc_otStr:
+                printf("Flag value: %s\n\r\n\r",pc_GetNextPrmSTR());
+                break;
+        }
+    } while (Ot!=pc_otEnd);
 }
 
-void Fun2p(void)
+void Fun2p(pc_IndexType iCmd)
 {
-    printf("\n\rFun2 z 2\n\r");
+    printf("\n\rFun2p z 2\n\r");
 }
 #endif //pc_UseOptions==0
 
-void Exit(void)
+void Exit(pc_IndexType iCmd)
 {
     printf("Exit\n\r");
     exit(0);
@@ -98,20 +113,22 @@ pc_BeginCmdArr
     pc_DefineCmd("cmd1", Fun1),
     pc_DefineCmd("cmd2", Fun2),
     pc_DefineCmd("exit", Exit),
+    pc_EndCmdList
 pc_EndCmdArr;
 #endif
 
 #if pc_UseOptions==1
 pc_BeginCmdArr
     pc_BeginCmd("cmd1p",Fun1p)
-        pc_DefineParam('1',pc_otFlag),
-        pc_DefineParam('3',pc_otFlag),
-        pc_DefineParam('3',pc_otEnd),
+        pc_DefineParam('f',pc_otFlag),
+        pc_DefineParam('F',pc_otFlag),
+        pc_DefineParam('s',pc_otStr),
+        pcEndParamList,
     pc_EndCmd,
     pc_BeginCmd("cmd2p",Fun2p)
         pc_DefineParam('1',pc_otFlag),
         pc_DefineParam('3',pc_otFlag),
-        pc_DefineParam('3',pc_otEnd),
+        pcEndParamList,
     pc_EndCmd,
     pc_BeginCmd("exit",Exit)
         pc_DefineParam('3',pc_otEnd),

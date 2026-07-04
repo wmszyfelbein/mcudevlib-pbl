@@ -32,12 +32,11 @@ struct pc_Option
  *
  *  This structure consist all data to define one option for the command.
  */
-enum pc_OptionType
+enum pc_OptionType:char
 {
     pc_otEnd,                           //!<To identify last empty option in array
     pc_otFlag,                          //!<switch flags, only one letter
-    pc_otChar,                          //!<integer value, can use 0xHex 0bBinary 0Octal or 'c'
-    pc_otInt8=pc_otChar,                //!<integer value, can use 0xHex 0bBinary 0Octal
+    pc_otInt8,                         //!<integer value, can use 0xHex 0bBinary 0Octal
     pc_otUInt8,                         //!<integer value, can use 0xHex 0bBinary 0Octal
     pc_otInt,                           //!<integer value, can use 0xHex 0bBinary 0Octal
     pc_otUInt,                          //!<integer value, can use 0xHex 0bBinary 0Octal
@@ -51,7 +50,7 @@ enum pc_OptionType
 struct pc_Cmd
 {
     char *Cmd;                          //!<Command string
-    void (*Fun)(void);                  //!<Command function which be called when command was entered
+    void (*Fun)(pc_IndexType iCmd);     //!<Command function which be called when command was entered
 #if pc_UseOptions==1
     struct pc_Option *Opts;             //!<Pointer to array of options defines
 #endif
@@ -66,7 +65,7 @@ extern struct pc_Cmd const pcCmds[];
 #define pc_BeginCmdArr struct pc_Cmd const pcCmds[]=(struct pc_Cmd[]) {
 #define pc_EndCmdArr }
 
-#if pc_UseOptions==0 
+#if pc_UseOptions==0
 #define pc_DefineCmd(name,fun) {.Cmd=name,.Fun=fun}
 #endif
 
@@ -89,17 +88,20 @@ extern void pc_DoCmd(void);
  *
  *  Function
  */
-extern char pc_GetNextPrmType(void);
+extern enum pc_OptionType pc_GetNextPrmType(pc_IndexType iCmdCnt);
 
 /*! \brief
  *
  *  Function
  */
+ #if pc_UseOptions==1
 extern char pc_GetNextPrmFlag(void);
-extern uint32_t pc_GetNextPrmUINT32(void);
 extern int32_t pc_GetNextPrmINT32(void);
-extern char pc_GetNextPrmSTR(void);
+extern uint32_t pc_GetNextPrmUINT32(pc_IndexType iCmd);
+extern char* pc_GetNextPrmSTR(void);
 
+extern void pc_PrintPSConsoleVer(pc_IndexType iCmd);
+#endif // pc_UseOptions
 /*! \brief Run console enter task (thread or concurrence)
  *
  *  Detailed description starts here.
