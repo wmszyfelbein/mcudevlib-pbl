@@ -12,6 +12,12 @@
 
 //!Defines type used to any index/counter type. Char type generates small (on tested) code in 8b micro-controller.
 //!For 16+b should be int..
+#define pcCPUMainType char
+
+
+
+//!Defines type used to any index/counter type. Char type generates small (on tested) code in 8b micro-controller.
+//!For 16+b should be int..
 #define pc_IndexType char
 
 //!Size of input buffer. Type of array is char

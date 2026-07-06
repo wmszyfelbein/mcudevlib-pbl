@@ -18,6 +18,10 @@
 extern "C" {
 #endif
 
+#define pc_PSCONVER "0.9"
+#define pc_PSCONTYPE "Min"
+#define pc_PSCONINFO "The PiUE Simple Console for small CPU but not only"
+
 /*! \brief Option definition struct
  *
  *  This structure consist all data to define one option for the command.
@@ -35,8 +39,9 @@ struct pc_Option
 enum pc_OptionType:char
 {
     pc_otEnd,                           //!<To identify last empty option in array
+    pc_otError,
     pc_otFlag,                          //!<switch flags, only one letter
-    pc_otInt8,                         //!<integer value, can use 0xHex 0bBinary 0Octal
+    pc_otInt8,                          //!<integer value, can use 0xHex 0bBinary 0Octal
     pc_otUInt8,                         //!<integer value, can use 0xHex 0bBinary 0Octal
     pc_otInt,                           //!<integer value, can use 0xHex 0bBinary 0Octal
     pc_otUInt,                          //!<integer value, can use 0xHex 0bBinary 0Octal
@@ -73,7 +78,8 @@ extern struct pc_Cmd const pcCmds[];
 #define pc_BeginCmd(name,fun) (struct pc_Cmd const){.Cmd=name,.Fun=fun,\
     .Opts=(struct pc_Option*) (struct pc_Option const[]) {
 #define pc_EndCmd }}
-#define pc_EndCmdList (struct pc_Cmd const){nullptr,.Fun=nullptr,.Opts=nullptr}
+#define pc_EndCmdList (struct pc_Cmd const){.Cmd=nullptr,.Fun=nullptr,.Opts=nullptr}
+#define pc_PSVerCmd (struct pc_Cmd const){.Cmd="psver",.Fun=pc_PrintPSConsoleVer,.Opts=nullptr}
 #define pc_DefineParam(opt,type) (struct pc_Option const){.Opt=opt,.Type=type}
 #define pcEndParamList pc_DefineParam('\0',pc_otEnd)
 #endif // pc_UseOptions
@@ -95,10 +101,12 @@ extern enum pc_OptionType pc_GetNextPrmType(pc_IndexType iCmdCnt);
  *  Function
  */
  #if pc_UseOptions==1
-extern char pc_GetNextPrmFlag(void);
+extern char pc_GetFlag(void);
 extern int32_t pc_GetNextPrmINT32(void);
-extern uint32_t pc_GetNextPrmUINT32(pc_IndexType iCmd);
+extern uint32_t pc_GetNextPrmUINT32(void);
 extern char* pc_GetNextPrmSTR(void);
+
+extern pc_IndexType pc_GetLastConvError(void);
 
 extern void pc_PrintPSConsoleVer(pc_IndexType iCmd);
 #endif // pc_UseOptions
